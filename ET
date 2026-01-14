@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Status</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --fg:#9fffb0; --muted:#6bd18f; --accent:#5cff87;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:radial-gradient(1200px 600px at 50% 10%, #101826, var(--bg));
+      color:var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .terminal{
+      width:min(92vw, 420px);
+      background:#05080d; border-radius:14px; box-shadow:0 30px 80px rgba(0,0,0,.6);
+      padding:18px 18px 16px; position:relative; overflow:hidden;
+      border:1px solid rgba(92,255,135,.15);
+    }
+    .glow{
+      position:absolute; inset:auto -40% -40% -40%; height:120%;
+      background:radial-gradient(closest-side, rgba(92,255,135,.12), transparent 60%);
+      pointer-events:none;
+    }
+    .bar{display:flex; gap:8px; margin-bottom:10px}
+    .dot{width:10px;height:10px;border-radius:50%;background:#1a2a1f}
+    .dot.g{background:#3bd671}
+    .dot.y{background:#e2c44c}
+    .dot.r{background:#e26666}
+    .screen{line-height:1.5; font-size:14px}
+    .line{opacity:0; animation: type .25s forwards}
+    @keyframes type{to{opacity:1}}
+    .big{font-size:18px; color:var(--accent)}
+    .muted{color:var(--muted)}
+    .btn{
+      margin-top:14px; width:100%; padding:10px 12px; border-radius:10px;
+      background:#0f1a14; color:var(--fg); border:1px solid rgba(92,255,135,.25);
+      cursor:pointer
+    }
+    .disclaimer{
+      display:none; margin-top:10px; font-size:12px; color:#b9ffd1; opacity:.9
+    }
+    .badge{
+      position:absolute; top:14px; right:14px; font-size:11px; padding:4px 8px;
+      border-radius:999px; background:rgba(92,255,135,.12); border:1px solid rgba(92,255,135,.35)
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal" role="img" aria-label="Harmless prank terminal">
+    <div class="glow"></div>
+    <div class="badge">PRANK MODE</div>
+    <div class="bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    </div>
+    <div class="screen" id="screen"></div>
+    <button class="btn" id="toggle">Show details</button>
+    <div class="disclaimer" id="disc">
+      This is a harmless prank page. No hacking, tracking, or data collection occurs.
+      It runs fully in your browser.
+    </div>
+  </div>  <script>
+    const lines = [
+      {t:'> initializing session…', d:200},
+      {t:'> handshake accepted', d:350},
+      {t:'> privilege check… bypassed', d:500},
+      {t:'', d:150},
+      {t:'YOU WERE NEVER LOCKED', d:600, cls:'big'},
+      {t:'', d:200},
+      {t:'status: authorized user', d:350, cls:'muted'},
+      {t:'trace: none', d:350, cls:'muted'},
+    ];
+    const screen = document.getElementById('screen');
+    let delay = 0;
+    lines.forEach(l => {
+      delay += l.d;
+      setTimeout(()=>{
+        const div = document.createElement('div');
+        div.className = 'line ' + (l.cls||'');
+        div.textContent = l.t;
+        screen.appendChild(div);
+      }, delay);
+    });
+    document.getElementById('toggle').onclick = () => {
+      const d = document.getElementById('disc');
+      d.style.display = d.style.display === 'block' ? 'none' : 'block';
+    };
+  </script></body>
+</html>
